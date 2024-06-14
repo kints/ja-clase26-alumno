@@ -26,19 +26,11 @@ public class AlumnoService {
   }
 
   public void borrarAlumno(UUID idreq) {
-    Optional<Alumno> alumnoOptional = alumnoRepository.findById(idreq);
-    if (!alumnoOptional.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-    alumnoRepository.delete(alumnoOptional.get());
+    alumnoRepository.delete(regresaAlumno(idreq));
   }
 
   public Alumno actualizaAlumno(UUID idreq, Alumno alumnoRequest) {
-    Optional<Alumno> alumnoOptional = alumnoRepository.findById(idreq);
-    if (!alumnoOptional.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-    Alumno alumnoBD = alumnoOptional.get();
+    Alumno alumnoBD = regresaAlumno(idreq);
     alumnoBD.setNombre(alumnoRequest.getNombre());
     alumnoBD.setApellidoPaterno(alumnoRequest.getApellidoPaterno());
     alumnoBD.setApellidoMaterno(alumnoRequest.getApellidoMaterno());
@@ -51,9 +43,12 @@ public class AlumnoService {
     return alumnoResponse;
   }
 
-  public Optional<Alumno> regresaAlumno(UUID idreq) {
+  public Alumno regresaAlumno(UUID idreq) {
     Optional<Alumno> alumnoOptional = alumnoRepository.findById(idreq);
-    return alumnoOptional;
+    if (!alumnoOptional.isPresent()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No encontré el registro");
+    }
+    return alumnoOptional.get();
   }
 
   public List<Alumno> regresaTodosAlumnos() {
