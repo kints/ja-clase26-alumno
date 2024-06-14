@@ -30,12 +30,7 @@ public class AlumnoController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Alumno> regresaAlumno(@PathVariable UUID id) {
-    Optional<Alumno> alumOptional = alumnoService.regresaAlumno(id);
-    if (alumOptional.isPresent()) {
-      Alumno alumnoResponse = alumOptional.get();
-      return ResponseEntity.ok().body(alumnoResponse);
-    }
-    return ResponseEntity.notFound().build();
+    return ResponseEntity.ok(alumnoService.regresaAlumno(id));
   }
 
   @GetMapping("todos/")
@@ -46,18 +41,17 @@ public class AlumnoController {
     return ResponseEntity.ok().body(alumnoService.regresaTodosAlumnos());
   }
 
-  @PostMapping("/")
+  @PostMapping("/alta")
   public ResponseEntity<Alumno> altaAlumno(@RequestBody Alumno alumnoRequest) {
-    Alumno alumnoReponse = alumnoService.altaAlumno(alumnoRequest);
-    return ResponseEntity.ok().body(alumnoReponse);
+    return ResponseEntity.ok(alumnoService.altaAlumno(alumnoRequest));
   }
 
   // jamexico.org.mx/alumno/654654-654654-654654-654654 PathVariable
   // jamexico.org.mx/alumno?id=34523452345-23452345-2345&sortby=ASC&fechaNacimiento=2024-05-05
   @PutMapping("actualiza/{id}")
-  public ResponseEntity<Alumno> actualizaAlumno(@PathVariable UUID id, @RequestBody Alumno alumnoReq) {
-    Alumno alumnoRes = alumnoService.actualizaAlumno(id, alumnoReq);
-    return ResponseEntity.ok().body(alumnoRes);
+  public ResponseEntity<Alumno> actualizaAlumno(@PathVariable UUID id,
+      @RequestBody Alumno alumnoReq) {
+    return ResponseEntity.ok(alumnoService.actualizaAlumno(id, alumnoReq));
   }
 
   @DeleteMapping("borrar/{id}")
